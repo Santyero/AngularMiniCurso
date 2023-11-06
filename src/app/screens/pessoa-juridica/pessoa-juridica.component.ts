@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Field } from '../../components/dynamic-form/dynamic-form.component';
+import { PessoaJuricaService } from '@services/pessoa-juridica.service';
+import { PessoaJuridica } from '@interfaces/pessoaJuridica';
 
 @Component({
     selector: 'app-pessoa-juridica',
     templateUrl: './pessoa-juridica.component.html',
     styleUrls: ['./pessoa-juridica.component.scss']
 })
-export class PessoaJuridicaComponent {
+export class PessoaJuridicaComponent implements OnInit {
 
     pessoaJuridicaForm = new FormGroup({
         'razaoSocial': new FormControl(null, Validators.required),
@@ -27,17 +29,42 @@ export class PessoaJuridicaComponent {
         { razaoSocial: 'Empresa 2LTDA', cnpj: '12345678901234', email: ''},
     ];
 
+    constructor(private service: PessoaJuricaService) { }
+
+    ngOnInit(): void {
+        this.buscar();
+    }
+
     onSubmit(): void {
         if (this.pessoaJuridicaForm.valid) {
-            // this.pessoaService.createPessoaJuridica(this.pessoaJuridicaForm.value).subscribe();
+            const pessoaJuridica: PessoaJuridica = {
+                razaoSocial: this.pessoaJuridicaForm.get('razaoSocial')?.value || '',
+                cnpj: this.pessoaJuridicaForm.get('cnpj')?.value || '',
+                email: this.pessoaJuridicaForm.get('email')?.value || '',
+                telefone: this.pessoaJuridicaForm.get('telefone')?.value || '',
+            };
+
+            this.service.create(pessoaJuridica).subscribe((response) => {
+                console.log('Response', response);
+            });
         }
     }
 
+    buscar(): void {
+        this.service.findAll().subscribe((response) => {
+            this.tableData = response;
+        });
+    }
+
     editar(item: any): void {
-        console.log('Editar', item);
+        // this.service.update(item).subscribe((response) => {
+        //     console.log('Response', response);
+        // });
     }
 
     excluir(item: any): void {
-        console.log('Excluir', item);
+        this.service.delete(item).subscribe((response) => {
+            console.log('Response', response);
+        });
     }
 }

@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from "@angular/material/button";
 import { PessoaFisicaService } from '@services/pessoa-fisica.service';
 import { SimpleGenericTableComponent } from './components/simple-generic-table/simple-generic-table.component';
-
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -28,6 +28,7 @@ import { SimpleGenericTableComponent } from './components/simple-generic-table/s
     ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
+    HttpClientModule,
     BrowserAnimationsModule
   ],
   providers: [PessoaFisicaService],

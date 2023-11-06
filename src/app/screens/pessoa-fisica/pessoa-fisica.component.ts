@@ -1,46 +1,73 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Field } from '../../components/dynamic-form/dynamic-form.component';
 import { PessoaFisicaService } from '@services/pessoa-fisica.service';
+import { PessoaFisica } from '@interfaces/pessoaFisica';
 
 @Component({
     selector: 'app-pessoa-fisica',
     templateUrl: './pessoa-fisica.component.html',
     styleUrls: ['./pessoa-fisica.component.scss']
 })
-export class PessoaFisicaComponent {
+export class PessoaFisicaComponent implements OnInit {
 
     pessoaFisicaForm = new FormGroup({
-        'nome': new FormControl(null, Validators.required),
-        'cpf': new FormControl(null, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]),
-        'email': new FormControl(null, [Validators.required, Validators.email]),
-        'telefone': new FormControl(null, Validators.required)
+        'nome': new FormControl('', Validators.required),
+        'cpf': new FormControl('', [Validators.required, Validators.minLength(11), Validators.maxLength(11)]),
+        'rg': new FormControl('', Validators.required),
+        'email': new FormControl('', [Validators.required, Validators.email]),
+        'telefone': new FormControl('', Validators.required)
     });
     formFields: Field[] = [
         { type: 'text', name: 'nome', label: 'Nome' },
         { type: 'text', name: 'cpf', label: 'CPF' },
+        { type: 'text', name: 'rg', label: 'RG' },
         { type: 'email', name: 'email', label: 'Email' },
         { type: 'text', name: 'telefone', label: 'Telefone' },
     ];
     tableData: any[] = [
-        { nome: 'João', cpf: '12345678901', email: ''},
-        { nome: 'Maria', cpf: '12345678901', email: ''},
-        { nome: 'José', cpf: '12345678901', email: ''},
+        { nome: 'João', cpf: '12345678901', email: '' },
+        { nome: 'Maria', cpf: '12345678901', email: '' },
+        { nome: 'José', cpf: '12345678901', email: '' },
     ];
 
-    // constructor(private pessoaService: PessoaFisicaService) { }
+    constructor(private service: PessoaFisicaService) { }
+
+    ngOnInit(): void {
+        this.buscar();
+    }
 
     onSubmit(): void {
         if (this.pessoaFisicaForm.valid) {
-            // this.pessoaService.createPessoaFisica(this.pessoaFisicaForm.value).subscribe();
+            const pessoaFisica: PessoaFisica = {
+                nome: this.pessoaFisicaForm.get('nome')?.value || '',
+                cpf: this.pessoaFisicaForm.get('cpf')?.value || '',
+                rg: this.pessoaFisicaForm.get('rg')?.value || '',
+                email: this.pessoaFisicaForm.get('email')?.value || '',
+                telefone: this.pessoaFisicaForm.get('telefone')?.value || '',
+            };
+
+            this.service.create(pessoaFisica).subscribe((response) => {
+                console.log('Response', response);
+            });
         }
     }
 
+    buscar(): void {
+        this.service.findAll().subscribe((response) => {
+            this.tableData = response;
+        });
+    }
+
     editar(item: any): void {
-        console.log('Editar', item);
+        // this.service.update(item).subscribe((response) => {
+        //     console.log('Response', response);
+        // });
     }
 
     excluir(item: any): void {
-        console.log('Excluir', item);
+        this.service.delete(item).subscribe((response) => {
+            console.log('Response', response);
+        });
     }
 }
