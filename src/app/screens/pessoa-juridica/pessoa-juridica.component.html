@@ -4,3 +4,10 @@
     title="Pessoa Jurídica"
     (formSubmitted)="onSubmit()"
 ></app-dynamic-form>
+
+<app-simple-generic-table
+    [data]="tableData"
+    [fields]="formFields"
+    (edit)="editar($event)"
+    (delete)="excluir($event)"
+></app-simple-generic-table>

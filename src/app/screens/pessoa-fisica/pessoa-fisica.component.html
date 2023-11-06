@@ -1,0 +1,13 @@
+<app-dynamic-form 
+    [formGroup]="pessoaFisicaForm" 
+    [fields]="formFields"
+    title="Pessoa Física"
+    (formSubmitted)="onSubmit()"
+></app-dynamic-form>
+
+<app-simple-generic-table
+    [data]="tableData"
+    [fields]="formFields"
+    (edit)="editar($event)"
+    (delete)="excluir($event)"
+></app-simple-generic-table>

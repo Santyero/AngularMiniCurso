@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Field } from '../dynamic-form/dynamic-form.component';
+import { Field } from '../../components/dynamic-form/dynamic-form.component';
 import { PessoaFisicaService } from '@services/pessoa-fisica.service';
 
 @Component({
@@ -22,6 +22,11 @@ export class PessoaFisicaComponent {
         { type: 'email', name: 'email', label: 'Email' },
         { type: 'text', name: 'telefone', label: 'Telefone' },
     ];
+    tableData: any[] = [
+        { nome: 'João', cpf: '12345678901', email: ''},
+        { nome: 'Maria', cpf: '12345678901', email: ''},
+        { nome: 'José', cpf: '12345678901', email: ''},
+    ];
 
     // constructor(private pessoaService: PessoaFisicaService) { }
 
@@ -29,5 +34,13 @@ export class PessoaFisicaComponent {
         if (this.pessoaFisicaForm.valid) {
             // this.pessoaService.createPessoaFisica(this.pessoaFisicaForm.value).subscribe();
         }
+    }
+
+    editar(item: any): void {
+        console.log('Editar', item);
+    }
+
+    excluir(item: any): void {
+        console.log('Excluir', item);
     }
 }

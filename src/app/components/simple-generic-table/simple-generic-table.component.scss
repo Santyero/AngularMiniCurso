@@ -1,0 +1,47 @@
+/* Estilize a tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilize o cabeçalho da tabela */
+  thead {
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  th {
+    padding: 10px;
+    text-align: left;
+  }
+  
+  /* Estilize as linhas da tabela */
+  tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  /* Estilize as células da tabela */
+  td {
+    padding: 10px;
+  }
+  
+  /* Estilize os botões de ação */
+  button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  }

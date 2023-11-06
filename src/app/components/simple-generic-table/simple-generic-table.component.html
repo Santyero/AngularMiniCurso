@@ -1,0 +1,16 @@
+<table>
+    <thead>
+        <tr>
+            <th *ngFor="let col of fields">{{col?.label}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of data">
+            <td *ngFor="let col of fields">{{col && col.name && item ? item[col.name] : ''}}</td>
+            <td>
+                <button mat-raised-button (click)="editar(item)">Editar</button>
+                <button mat-raised-button (click)="excluir(item)">Excluir</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Field } from '../dynamic-form/dynamic-form.component';
+import { Field } from '../../components/dynamic-form/dynamic-form.component';
 
 @Component({
     selector: 'app-pessoa-juridica',
@@ -22,9 +22,22 @@ export class PessoaJuridicaComponent {
         { type: 'text', name: 'telefone', label: 'Telefone' },
     ];
 
+    tableData: any[] = [
+        { razaoSocial: 'Empresa 1LTDA', cnpj: '12345678901234', email: ''},
+        { razaoSocial: 'Empresa 2LTDA', cnpj: '12345678901234', email: ''},
+    ];
+
     onSubmit(): void {
         if (this.pessoaJuridicaForm.valid) {
             // this.pessoaService.createPessoaJuridica(this.pessoaJuridicaForm.value).subscribe();
         }
+    }
+
+    editar(item: any): void {
+        console.log('Editar', item);
+    }
+
+    excluir(item: any): void {
+        console.log('Excluir', item);
     }
 }
