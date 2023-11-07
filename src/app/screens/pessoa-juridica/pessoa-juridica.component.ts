@@ -25,8 +25,8 @@ export class PessoaJuridicaComponent implements OnInit {
     ];
 
     tableData: any[] = [
-        { razaoSocial: 'Empresa 1LTDA', cnpj: '12345678901234', email: ''},
-        { razaoSocial: 'Empresa 2LTDA', cnpj: '12345678901234', email: ''},
+        { razaoSocial: 'Empresa 1LTDA', cnpj: '12345678901234', email: '' },
+        { razaoSocial: 'Empresa 2LTDA', cnpj: '12345678901234', email: '' },
     ];
 
     constructor(private service: PessoaJuricaService) { }
@@ -36,18 +36,22 @@ export class PessoaJuridicaComponent implements OnInit {
     }
 
     onSubmit(): void {
-        if (this.pessoaJuridicaForm.valid) {
-            const pessoaJuridica: PessoaJuridica = {
-                razaoSocial: this.pessoaJuridicaForm.get('razaoSocial')?.value || '',
-                cnpj: this.pessoaJuridicaForm.get('cnpj')?.value || '',
-                email: this.pessoaJuridicaForm.get('email')?.value || '',
-                telefone: this.pessoaJuridicaForm.get('telefone')?.value || '',
-            };
-
-            this.service.create(pessoaJuridica).subscribe((response) => {
-                console.log('Response', response);
-            });
+        if (this.pessoaJuridicaForm.invalid) {
+            return;
         }
+
+        const pessoaJuridica: PessoaJuridica = {
+            razaoSocial: this.pessoaJuridicaForm.get('razaoSocial')?.value || '',
+            cnpj: this.pessoaJuridicaForm.get('cnpj')?.value || '',
+            email: this.pessoaJuridicaForm.get('email')?.value || '',
+            telefone: this.pessoaJuridicaForm.get('telefone')?.value || '',
+        };
+
+        this.service.create(pessoaJuridica).subscribe({
+            next: (response) => {
+                this.buscar();
+            }
+        });
     }
 
     buscar(): void {
@@ -63,8 +67,8 @@ export class PessoaJuridicaComponent implements OnInit {
     }
 
     excluir(item: any): void {
-        this.service.delete(item).subscribe((response) => {
-            console.log('Response', response);
-        });
+        this.service.delete(item).subscribe({next: (response) => {
+            this.buscar();
+        }});
     }
 }

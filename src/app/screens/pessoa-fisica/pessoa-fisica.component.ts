@@ -38,19 +38,23 @@ export class PessoaFisicaComponent implements OnInit {
     }
 
     onSubmit(): void {
-        if (this.pessoaFisicaForm.valid) {
-            const pessoaFisica: PessoaFisica = {
-                nome: this.pessoaFisicaForm.get('nome')?.value || '',
-                cpf: this.pessoaFisicaForm.get('cpf')?.value || '',
-                rg: this.pessoaFisicaForm.get('rg')?.value || '',
-                email: this.pessoaFisicaForm.get('email')?.value || '',
-                telefone: this.pessoaFisicaForm.get('telefone')?.value || '',
-            };
-
-            this.service.create(pessoaFisica).subscribe((response) => {
-                console.log('Response', response);
-            });
+        if (this.pessoaFisicaForm.invalid) {
+            return;
         }
+
+        const pessoaFisica: PessoaFisica = {
+            nome: this.pessoaFisicaForm.get('nome')?.value || '',
+            cpf: this.pessoaFisicaForm.get('cpf')?.value || '',
+            rg: this.pessoaFisicaForm.get('rg')?.value || '',
+            email: this.pessoaFisicaForm.get('email')?.value || '',
+            telefone: this.pessoaFisicaForm.get('telefone')?.value || '',
+        };
+
+        this.service.create(pessoaFisica).subscribe({
+            next: (response) => {
+                this.buscar();
+            }
+        });
     }
 
     buscar(): void {
@@ -62,12 +66,12 @@ export class PessoaFisicaComponent implements OnInit {
     editar(item: any): void {
         // this.service.update(item).subscribe((response) => {
         //     console.log('Response', response);
-        // });
+        // });  
     }
 
     excluir(item: any): void {
-        this.service.delete(item).subscribe((response) => {
-            console.log('Response', response);
-        });
+        this.service.delete(item).subscribe({next: (response) => {
+            this.buscar();
+        }});
     }
 }

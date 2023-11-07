@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 export interface Field {
@@ -16,15 +16,13 @@ export interface Field {
 export class DynamicFormComponent {
   @Input() formGroup: FormGroup = new FormGroup({});
   @Input() fields: Field[] = [];
-  @Input() formSubmitted: boolean = false;
   @Input() title: string = '';
+  
+  @Output() onSalvar = new EventEmitter();
 
   constructor() { }
 
   onSaveClick(): void {
-    this.formSubmitted = true;
-    if (this.formGroup.valid) {
-      console.log(this.formGroup.value);
-    }
+    this.onSalvar.emit()
   }
 }
