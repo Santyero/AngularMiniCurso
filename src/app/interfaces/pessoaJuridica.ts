@@ -1,6 +1,7 @@
 import { Pessoa } from "./pessoa";
 
 export interface PessoaJuridica extends Pessoa {
-  cnpj: string;
-  razaoSocial: string;
+    id?:  number | null | undefined;
+    cnpj: string;
+    razaoSocial: string;
 }

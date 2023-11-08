@@ -18,8 +18,8 @@ export class GenericService<T> {
         return this.http.get<T>(`${this.baseUrl}/${id}`);
     }
 
-    update(resource: T): Observable<T> {
-        return this.http.put<T>(this.baseUrl, resource);
+    update(resource: T, id: number): Observable<T> {
+        return this.http.put<T>(`${this.baseUrl}/${id}`, resource);
     }
 
     delete(resource: T): Observable<void> {

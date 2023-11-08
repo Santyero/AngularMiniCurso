@@ -12,6 +12,7 @@ import { PessoaFisica } from '@interfaces/pessoaFisica';
 export class PessoaFisicaComponent implements OnInit {
 
     pessoaFisicaForm = new FormGroup({
+        'id': new FormControl(null),
         'nome': new FormControl('', Validators.required),
         'cpf': new FormControl('', [Validators.required, Validators.minLength(11), Validators.maxLength(11)]),
         'rg': new FormControl('', Validators.required),
@@ -25,11 +26,7 @@ export class PessoaFisicaComponent implements OnInit {
         { type: 'email', name: 'email', label: 'Email' },
         { type: 'text', name: 'telefone', label: 'Telefone' },
     ];
-    tableData: any[] = [
-        { nome: 'João', cpf: '12345678901', email: '' },
-        { nome: 'Maria', cpf: '12345678901', email: '' },
-        { nome: 'José', cpf: '12345678901', email: '' },
-    ];
+    tableData: PessoaFisica[] = [];
 
     constructor(private service: PessoaFisicaService) { }
 
@@ -42,31 +39,54 @@ export class PessoaFisicaComponent implements OnInit {
             return;
         }
 
-        const pessoaFisica: PessoaFisica = {
-            nome: this.pessoaFisicaForm.get('nome')?.value || '',
-            cpf: this.pessoaFisicaForm.get('cpf')?.value || '',
-            rg: this.pessoaFisicaForm.get('rg')?.value || '',
-            email: this.pessoaFisicaForm.get('email')?.value || '',
-            telefone: this.pessoaFisicaForm.get('telefone')?.value || '',
-        };
+        const pessoaFisica = this.getPessoaFisicaFormulario();
 
+        if (!pessoaFisica?.id) {
+            this.criar(pessoaFisica);
+        } else {
+            this.editar(pessoaFisica, pessoaFisica.id);
+        }
+
+        this.pessoaFisicaForm.reset();
+    }
+
+    getPessoaFisicaFormulario(): PessoaFisica {
+        return {
+          id: this.pessoaFisicaForm.get('id')?.value,
+          nome: this.pessoaFisicaForm.get('nome')?.value || '',
+          cpf: this.pessoaFisicaForm.get('cpf')?.value || '',
+          rg: this.pessoaFisicaForm.get('rg')?.value || '',
+          email: this.pessoaFisicaForm.get('email')?.value || '',
+          telefone: this.pessoaFisicaForm.get('telefone')?.value || '',
+        };
+      }
+
+    criar(pessoaFisica: PessoaFisica): void {
         this.service.create(pessoaFisica).subscribe({
-            next: (response) => {
+            next: () => {
+                this.buscar();
+            }
+        });
+    }
+
+    editar(pessoaFisica: PessoaFisica, id: number): void {
+        this.service.update(pessoaFisica, id).subscribe({
+            next: () => {
                 this.buscar();
             }
         });
     }
 
     buscar(): void {
-        this.service.findAll().subscribe((response) => {
-            this.tableData = response;
+        this.service.findAll().subscribe({
+            next: (response) => {
+                this.tableData = response;
+            }
         });
     }
 
-    editar(item: any): void {
-        // this.service.update(item).subscribe((response) => {
-        //     console.log('Response', response);
-        // });  
+    iniciarEdicao(item: any): void {
+        this.pessoaFisicaForm.patchValue(item);
     }
 
     excluir(item: any): void {
